@@ -1,29 +1,71 @@
-Here’s a compact, hands-on “build it up” refresher that starts from a tiny API and grows—step by step—into a microservices system with UI, workers, RabbitMQ, FTP integration, and an iSeries adapter. Each phase has two tracks: (A) diagramming in Lucidchart, (B) implementation with Docker. All service examples are intentionally “hello-world-ish” so you focus on architecture, not app complexity.
+Here’s a```
+/network-architecture-refresh
+/compose/phase-00.yml # docker-compose files per phase
+/phase-00/ # step-by-step guides for phase 00
+step-1-lucidchart-phase-00-instructions.md
+step-2-docker-api-guide.md
+/services
+/api # simple REST orchestrator (Node/Express or .NET/Flask – your call)
+/ui # minimal UI (static or small SPA)
+/worker # background worker (e.g., Python rq / Node BullMQ)
+/queue # RabbitMQ (image only)
+/cache # Redis (image only)
+/db # Postgres (image only)
+/ftp # vsftpd container + seed folder
+/iseries-adapter # façade that translates to/from iSeries (mocked)
+/integrations # tiny mock "partner" services (HTTP)
+/.env.example
+/.gitignore # excludes node_modules, package-lock.json, etc.
+/docs
+/lucid/ # exported PNG/PDF per phase
+/runbooks/ # short notes per phase
+
+```“build it up” refresher that starts from a tiny API and grows—step by step—into a microservices system with UI, workers, RabbitMQ, FTP integration, and an iSeries adapter. Each phase has two tracks: (A) diagramming in Lucidchart, (B) implementation with Docker. All service examples are intentionally “hello-world-ish” so you focus on architecture, not app complexity.
 
 ---
 
 # Network Architecture Refresh (Hands-On)
 
+## 🎯 Progress Status
+
+| Phase | Lucidchart | Implementation | Status |
+|-------|------------|----------------|--------|
+| **Phase 00** | ✅ Complete | ✅ Complete | ✅ **DONE** |
+| Phase 01 | ⏳ Pending | ⏳ Pending | ⏳ Next |
+| Phase 02 | ⏳ Pending | ⏳ Pending | ⏳ Planned |
+
+**Phase 00 Completed:**
+- ✅ Lucidchart diagram created and exported (`docs/lucid/Net_Refresh_Phase_00.png`)
+- ✅ Minimal API with `/health` endpoint (`services/api/server.js`)
+- ✅ Docker Compose configuration (`compose/phase-00.yml`)
+- ✅ Network setup (`front_net`, `back_net`)
+- ✅ Package.json with Express dependency and ES6 modules
+- ✅ Step-by-step documentation (`phase-00/step-*.md`)
+- ✅ Gitignore configuration
+- ✅ Successfully validated: `curl http://localhost:8080/health` → `{"status":"ok"}`
+
 ## Repo layout (from Phase 0 onward)
 
 ```
+
 /net-architecture-refresh
-  /compose/phase-00..phase-10   # docker-compose files per phase
-  /services
-    /api          # simple REST orchestrator (Node/Express or .NET/Flask – your call)
-    /ui           # minimal UI (static or small SPA)
-    /worker       # background worker (e.g., Python rq / Node BullMQ)
-    /queue        # RabbitMQ (image only)
-    /cache        # Redis (image only)
-    /db           # Postgres (image only)
-    /ftp          # vsftpd container + seed folder
-    /iseries-adapter # façade that translates to/from iSeries (mocked)
-    /integrations   # tiny mock “partner” services (HTTP)
-  /.env.example
-  /docs
-    /lucid/       # exported PNG/PDF per phase
-    /runbooks/    # short notes per phase
-```
+/compose/phase-00..phase-10 # docker-compose files per phase
+/services
+/api # simple REST orchestrator (Node/Express or .NET/Flask – your call)
+/ui # minimal UI (static or small SPA)
+/worker # background worker (e.g., Python rq / Node BullMQ)
+/queue # RabbitMQ (image only)
+/cache # Redis (image only)
+/db # Postgres (image only)
+/ftp # vsftpd container + seed folder
+/iseries-adapter # façade that translates to/from iSeries (mocked)
+/integrations # tiny mock “partner” services (HTTP)
+/.env.example
+/docs
+/lucid/ # exported PNG/PDF per phase
+/runbooks/ # short notes per phase
+
+````
 
 > **Naming & networks**
 > Use two Docker networks throughout to visualize segmentation:
@@ -55,13 +97,34 @@ services:
     image: node:22-alpine
     working_dir: /app
     command: sh -c "npm i && node server.js"
-    volumes: ["./services/api:/app"]
+    volumes: ["../services/api:/app"]
     ports: ["8080:8080"]
     networks: [front_net, back_net]
 networks: { front_net: {}, back_net: {} }
-```
+````
+
+> **Note**: The volume path uses `../services/api:/app` because the compose file is in the `compose/` subdirectory.
+
+**Prerequisites**: Ensure `services/api/package.json` exists with Express dependency and `"type": "module"` for ES6 imports.
 
 **Validate:** `curl http://localhost:8080/health` → 200.
+
+### Common Issues & Solutions
+
+**Problem**: `npm error code ENOENT... package.json`
+
+- **Solution**: Ensure `services/api/package.json` exists with Express dependency
+- **Root Cause**: ES6 imports require proper package.json configuration
+
+**Problem**: Volume mount not working
+
+- **Solution**: Use correct relative path `../services/api:/app` (not `./services/api:/app`)
+- **Root Cause**: Compose file is in `compose/` subdirectory
+
+**Problem**: Permission denied removing `node_modules`
+
+- **Solution**: Stop containers first: `docker compose -f compose/phase-00.yml down`
+- **Root Cause**: Docker creates files as root user
 
 ---
 
@@ -309,10 +372,17 @@ healthcheck:
 - Create `compose/phase-10.yml` that includes all components and sensible depends_on/healthchecks.
 - Add a `Makefile`:
 
-```
-make up PHASE=10   # runs compose/phase-10.yml
-make down
-make logs S=worker
+```makefile
+up:
+	docker compose -f compose/phase-$(PHASE).yml up -d
+down:
+	docker compose -f compose/phase-$(PHASE).yml down
+logs:
+	docker compose -f compose/phase-$(PHASE).yml logs -f $(S)
+
+# Usage examples:
+# make up PHASE=00
+# make logs PHASE=00 S=api
 ```
 
 **Final demo script (5 minutes):**

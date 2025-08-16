@@ -3,7 +3,7 @@ services:
     image: node:22-alpine
     working_dir: /app
     command: sh -c "npm i && node server.js"
-    volumes: ["./services/api:/app"]
+    volumes: ["../services/api:/app"]
     ports: ["8080:8080"]
     networks: [front_net, back_net]
 networks:
