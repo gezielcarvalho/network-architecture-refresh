@@ -1,19 +1,4 @@
-Here's a compact, hands-on "build it up" refresher that starts from a tiny```
-
-> **Naming & networks**
-> Use two Do### A. Lucidchart
-
-- Create a new doc: **"Net Refresh – Phase 00"**.
-- Add a container **"App Stack"** with network segmentation:
-  - Two network boundaries: **front_net** and **back_net**
-  - **API** node positioned at the boundary (connected to both networks)
-- Add an external **Client** shape → arrow to **API** (HTTP 8080).
-- Style: green = stateless, blue = stateful, orange = infra. API = green.
-- Include network annotations showing future purpose of each segment.etworks throughout to visualize segmentation:
-  > - `front_net` (UI ↔ API)
-  > - `back_net` (API ↔ workers/queues/db/iseries/ftp)
-  >
-  > Add aliases per service (e.g., `api`, `queue`, `db`) so hostnames in code are stable.ep by step—into a microservices system with UI, workers, RabbitMQ, FTP integration, and an iSeries adapter. Each phase has two tracks: (A) diagramming in Lucidchart, (B) implementation with Docker. All service examples are intentionally "hello-world-ish" so you focus on architecture, not app complexity.
+Here's a compact, hands-on "build it up" refresher that starts from a tiny API and grows—step by step—into a microservices system with UI, workers, RabbitMQ, FTP integration, and an iSeries adapter. Each phase has two tracks: (A) diagramming in Lucidchart, (B) implementation with Docker. All service examples are intentionally "hello-world-ish" so you focus on architecture, not app complexity.
 
 ---
 
@@ -29,54 +14,7 @@ Here's a compact, hands-on "build it up" refresher that starts from a tiny```
 
 **Phase 00 Completed:**
 
-- ✅ Lucidchart diagram created and exported (`docs/lucid/Net_Refresh_Phase_00.png`)
-- ✅ Minimal API with `/health` endpoint (`services/api/server.js`)
-- ✅ Docker Compose configuration (`compose/phase-00.yml`)
-- ✅ Network setup (`front_net`, `back_net`)
-- ✅ Package.json with Express dependency and ES6 modules
-- ✅ Step-by-step documentation (`phase-00/step-*.md`)
-- ✅ Gitignore configuration
-- ✅ Successfully validated: `curl http://localhost:8080/health` → `{"status":"ok"}`
-
-## Repo layout (from Phase 0 onward)```
-
-/network-architecture-refresh
-/compose/phase-00.yml # docker-compose files per phase
-/phase-00/ # step-by-step guides for phase 00
-step-1-lucidchart-phase-00-instructions.md
-step-2-docker-api-guide.md
-/services
-/api # simple REST orchestrator (Node/Express or .NET/Flask – your call)
-/ui # minimal UI (static or small SPA)
-/worker # background worker (e.g., Python rq / Node BullMQ)
-/queue # RabbitMQ (image only)
-/cache # Redis (image only)
-/db # Postgres (image only)
-/ftp # vsftpd container + seed folder
-/iseries-adapter # façade that translates to/from iSeries (mocked)
-/integrations # tiny mock "partner" services (HTTP)
-/.env.example
-/.gitignore # excludes node_modules, package-lock.json, etc.
-/docs
-/lucid/ # exported PNG/PDF per phase
-/runbooks/ # short notes per phase
-
-```“build it up” refresher that starts from a tiny API and grows—step by step—into a microservices system with UI, workers, RabbitMQ, FTP integration, and an iSeries adapter. Each phase has two tracks: (A) diagramming in Lucidchart, (B) implementation with Docker. All service examples are intentionally “hello-world-ish” so you focus on architecture, not app complexity.
-
----
-
-# Network Architecture Refresh (Hands-On)
-
-## 🎯 Progress Status
-
-| Phase | Lucidchart | Implementation | Status |
-|-------|------------|----------------|--------|
-| **Phase 00** | ✅ Complete | ✅ Complete | ✅ **DONE** |
-| Phase 01 | ⏳ Pending | ⏳ Pending | ⏳ Next |
-| Phase 02 | ⏳ Pending | ⏳ Pending | ⏳ Planned |
-
-**Phase 00 Completed:**
-- ✅ Lucidchart diagram created and exported (`docs/lucid/Net_Refresh_Phase_00.png`)
+- ✅ Lucidchart diagram created and exported with network segmentation (`docs/lucid/Net_Refresh_Phase_00.png`)
 - ✅ Minimal API with `/health` endpoint (`services/api/server.js`)
 - ✅ Docker Compose configuration (`compose/phase-00.yml`)
 - ✅ Network setup (`front_net`, `back_net`)
@@ -88,25 +26,27 @@ step-2-docker-api-guide.md
 ## Repo layout (from Phase 0 onward)
 
 ```
-
-/net-architecture-refresh
-/compose/phase-00..phase-10 # docker-compose files per phase
-/services
-/api # simple REST orchestrator (Node/Express or .NET/Flask – your call)
-/ui # minimal UI (static or small SPA)
-/worker # background worker (e.g., Python rq / Node BullMQ)
-/queue # RabbitMQ (image only)
-/cache # Redis (image only)
-/db # Postgres (image only)
-/ftp # vsftpd container + seed folder
-/iseries-adapter # façade that translates to/from iSeries (mocked)
-/integrations # tiny mock “partner” services (HTTP)
-/.env.example
-/docs
-/lucid/ # exported PNG/PDF per phase
-/runbooks/ # short notes per phase
-
-````
+/network-architecture-refresh
+  /compose/phase-00.yml         # docker-compose files per phase
+  /phase-00/                    # step-by-step guides for phase 00
+    step-1-lucidchart-phase-00-instructions.md
+    step-2-docker-api-guide.md
+  /services
+    /api          # simple REST orchestrator (Node/Express or .NET/Flask – your call)
+    /ui           # minimal UI (static or small SPA)
+    /worker       # background worker (e.g., Python rq / Node BullMQ)
+    /queue        # RabbitMQ (image only)
+    /cache        # Redis (image only)
+    /db           # Postgres (image only)
+    /ftp          # vsftpd container + seed folder
+    /iseries-adapter # façade that translates to/from iSeries (mocked)
+    /integrations   # tiny mock "partner" services (HTTP)
+  /.env.example
+  /.gitignore     # excludes node_modules, package-lock.json, etc.
+  /docs
+    /lucid/       # exported PNG/PDF per phase
+    /runbooks/    # short notes per phase
+```
 
 > **Naming & networks**
 > Use two Docker networks throughout to visualize segmentation:
@@ -122,10 +62,13 @@ step-2-docker-api-guide.md
 
 ### A. Lucidchart
 
-- Create a new doc: **“Net Refresh – Phase 00”**.
-- Add a container **“App Stack”** with one node: **API**.
+- Create a new doc: **"Net Refresh – Phase 00"**.
+- Add a container **"App Stack"** with network segmentation:
+  - Two network boundaries: **front_net** and **back_net**
+  - **API** node positioned at the boundary (connected to both networks)
 - Add an external **Client** shape → arrow to **API** (HTTP 8080).
 - Style: green = stateless, blue = stateful, orange = infra. API = green.
+- Include network annotations showing future purpose of each segment.
 
 ### B. Docker & Code (minimal)
 
@@ -142,7 +85,7 @@ services:
     ports: ["8080:8080"]
     networks: [front_net, back_net]
 networks: { front_net: {}, back_net: {} }
-````
+```
 
 > **Note**: The volume path uses `../services/api:/app` because the compose file is in the `compose/` subdirectory.
 
@@ -229,7 +172,7 @@ volumes: { pgdata: {} }
 networks: { front_net: {}, back_net: {} }
 ```
 
-**API demo:** `GET /greet?name=Ana` → store “Ana” in DB; cache last greeting.
+**API demo:** `GET /greet?name=Ana` → store "Ana" in DB; cache last greeting.
 
 ---
 
@@ -272,8 +215,8 @@ services:
 ### A. Lucidchart
 
 - Add **FTP Server** (blue, stateful) in **back_net**.
-- Flow: **API → Queue** (“ftp.upload” job) → **Worker → FTP** (21).
-- Optionally **FTP → Worker** for polling new files (“ftp.import”).
+- Flow: **API → Queue** ("ftp.upload" job) → **Worker → FTP** (21).
+- Optionally **FTP → Worker** for polling new files ("ftp.import").
 
 ### B. Docker
 
@@ -296,7 +239,7 @@ services:
 
 ## Phase 05 — iSeries Adapter (façade)
 
-> We won’t spin a real IBM i/DB2. Instead, you’ll build an **iseries-adapter** microservice that exposes a very small REST contract (e.g., `/iseries/customer/:id`) and _internally_ simulates protocol/format peculiarities (fixed-width records, EBCDIC conversion stub, etc.). This isolates the legacy specifics.
+> We won't spin a real IBM i/DB2. Instead, you'll build an **iseries-adapter** microservice that exposes a very small REST contract (e.g., `/iseries/customer/:id`) and _internally_ simulates protocol/format peculiarities (fixed-width records, EBCDIC conversion stub, etc.). This isolates the legacy specifics.
 
 ### A. Lucidchart
 
@@ -316,7 +259,7 @@ services:
     networks: [back_net]
 ```
 
-**Hello-world:** `GET /iseries/customer/42` returns a mock fixed-width translation (e.g., converts `{name:"JOSE"}` into “JOSE\_\_\_\_\_”).
+**Hello-world:** `GET /iseries/customer/42` returns a mock fixed-width translation (e.g., converts `{name:"JOSE"}` into "JOSE\_\_\_\_\_").
 
 ---
 
@@ -390,7 +333,7 @@ healthcheck:
 
 ### B. Docker
 
-- Put **API** behind **gateway** (publish only gateway’s port).
+- Put **API** behind **gateway** (publish only gateway's port).
 - Move secrets to `.env` and demonstrate a per-service env injection.
 - Optional: self-signed TLS for gateway.
 
@@ -444,7 +387,7 @@ logs:
 - **Line styles:** Solid = sync HTTP; Dashed = async/AMQP; Dotted = management/metrics.
 - **Layers:** One layer per phase so you can toggle complexity on/off.
 - **Data fields:** Add shape data (port, protocol, env vars).
-- **Callouts:** Mini notes for “retries: 3”, “timeout: 2s”, “DLQ: enabled”.
+- **Callouts:** Mini notes for "retries: 3", "timeout: 2s", "DLQ: enabled".
 
 ---
 
