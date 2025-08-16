@@ -29,23 +29,23 @@ Here's a compact, hands-on "build it up" refresher that starts from a tiny API a
 /network-architecture-refresh
   /compose/phase-00.yml         # docker-compose files per phase
   /phase-00/                    # step-by-step guides for phase 00
-    step-1-lucidchart-phase-00-instructions.md
+    step-1-lucidchart-instructions.md
     step-2-docker-api-guide.md
   /services
-    /api          # simple REST orchestrator (Node/Express or .NET/Flask – your call)
-    /ui           # minimal UI (static or small SPA)
-    /worker       # background worker (e.g., Python rq / Node BullMQ)
-    /queue        # RabbitMQ (image only)
-    /cache        # Redis (image only)
-    /db           # Postgres (image only)
-    /ftp          # vsftpd container + seed folder
-    /iseries-adapter # façade that translates to/from iSeries (mocked)
-    /integrations   # tiny mock "partner" services (HTTP)
-  /.env.example
-  /.gitignore     # excludes node_modules, package-lock.json, etc.
+    /api          # simple REST orchestrator (Node/Express) ✅ IMPLEMENTED
+    /ui           # minimal UI (static or small SPA) - Phase 01
+    /worker       # background worker (e.g., Python rq / Node BullMQ) - Phase 03
+    /queue        # RabbitMQ (image only) - Phase 03
+    /cache        # Redis (image only) - Phase 02
+    /db           # Postgres (image only) - Phase 02
+    /ftp          # vsftpd container + seed folder - Phase 04
+    /iseries-adapter # façade that translates to/from iSeries (mocked) - Phase 05
+    /integrations   # tiny mock "partner" services (HTTP) - Future
+  /.env.example   # Environment variables template - To be created
+  /.gitignore     # excludes node_modules, package-lock.json, etc. ✅ EXISTS
   /docs
-    /lucid/       # exported PNG/PDF per phase
-    /runbooks/    # short notes per phase
+    /lucid/       # exported PNG/PDF per phase ✅ EXISTS
+    /runbooks/    # short notes per phase - To be created
 ```
 
 > **Naming & networks**
