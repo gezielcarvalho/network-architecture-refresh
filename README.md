@@ -1,4 +1,38 @@
-Here’s a```
+Here's a compact, hands-on "build it up" refresher that starts from a tiny```
+
+> **Naming & networks**
+> Use two Docker networks throughout to visualize segmentation:
+>
+> - `front_net` (UI ↔ API)
+> - `back_net` (API ↔ workers/queues/db/iseries/ftp)
+>
+> Add aliases per service (e.g., `api`, `queue`, `db`) so hostnames in code are stable.ep by step—into a microservices system with UI, workers, RabbitMQ, FTP integration, and an iSeries adapter. Each phase has two tracks: (A) diagramming in Lucidchart, (B) implementation with Docker. All service examples are intentionally "hello-world-ish" so you focus on architecture, not app complexity.
+
+---
+
+# Network Architecture Refresh (Hands-On)
+
+## 🎯 Progress Status
+
+| Phase        | Lucidchart  | Implementation | Status      |
+| ------------ | ----------- | -------------- | ----------- |
+| **Phase 00** | ✅ Complete | ✅ Complete    | ✅ **DONE** |
+| Phase 01     | ⏳ Pending  | ⏳ Pending     | ⏳ Next     |
+| Phase 02     | ⏳ Pending  | ⏳ Pending     | ⏳ Planned  |
+
+**Phase 00 Completed:**
+
+- ✅ Lucidchart diagram created and exported (`docs/lucid/Net_Refresh_Phase_00.png`)
+- ✅ Minimal API with `/health` endpoint (`services/api/server.js`)
+- ✅ Docker Compose configuration (`compose/phase-00.yml`)
+- ✅ Network setup (`front_net`, `back_net`)
+- ✅ Package.json with Express dependency and ES6 modules
+- ✅ Step-by-step documentation (`phase-00/step-*.md`)
+- ✅ Gitignore configuration
+- ✅ Successfully validated: `curl http://localhost:8080/health` → `{"status":"ok"}`
+
+## Repo layout (from Phase 0 onward)```
+
 /network-architecture-refresh
 /compose/phase-00.yml # docker-compose files per phase
 /phase-00/ # step-by-step guides for phase 00
