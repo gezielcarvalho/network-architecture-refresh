@@ -1,12 +1,19 @@
 Here's a compact, hands-on "build it up" refresher that starts from a tiny```
 
 > **Naming & networks**
-> Use two Docker networks throughout to visualize segmentation:
->
-> - `front_net` (UI ↔ API)
-> - `back_net` (API ↔ workers/queues/db/iseries/ftp)
->
-> Add aliases per service (e.g., `api`, `queue`, `db`) so hostnames in code are stable.ep by step—into a microservices system with UI, workers, RabbitMQ, FTP integration, and an iSeries adapter. Each phase has two tracks: (A) diagramming in Lucidchart, (B) implementation with Docker. All service examples are intentionally "hello-world-ish" so you focus on architecture, not app complexity.
+> Use two Do### A. Lucidchart
+
+- Create a new doc: **"Net Refresh – Phase 00"**.
+- Add a container **"App Stack"** with network segmentation:
+  - Two network boundaries: **front_net** and **back_net**
+  - **API** node positioned at the boundary (connected to both networks)
+- Add an external **Client** shape → arrow to **API** (HTTP 8080).
+- Style: green = stateless, blue = stateful, orange = infra. API = green.
+- Include network annotations showing future purpose of each segment.etworks throughout to visualize segmentation:
+  > - `front_net` (UI ↔ API)
+  > - `back_net` (API ↔ workers/queues/db/iseries/ftp)
+  >
+  > Add aliases per service (e.g., `api`, `queue`, `db`) so hostnames in code are stable.ep by step—into a microservices system with UI, workers, RabbitMQ, FTP integration, and an iSeries adapter. Each phase has two tracks: (A) diagramming in Lucidchart, (B) implementation with Docker. All service examples are intentionally "hello-world-ish" so you focus on architecture, not app complexity.
 
 ---
 
