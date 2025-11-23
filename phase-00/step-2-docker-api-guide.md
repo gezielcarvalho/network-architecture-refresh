@@ -12,8 +12,14 @@ This guide explains how the minimal API was set up and how to run it using Docke
    - Connects the service to two networks: `front_net` and `back_net`.
 
 2. **Created API code** (`services/api/server.js`):
+
    - Simple Express server with a single endpoint:
      - `GET /health` returns `{status: "ok"}`.
+
+3. **Created package.json** (`services/api/package.json`):
+   - Defines Express as a dependency
+   - Enables ES6 modules with `"type": "module"`
+   - Includes npm scripts for running the server
 
 ## How to Run
 
@@ -30,7 +36,11 @@ This guide explains how the minimal API was set up and how to run it using Docke
 ## Troubleshooting
 
 - If you get a connection error, make sure Docker Desktop is running and port 8080 is not in use.
-- If you see missing module errors, ensure your `services/api/server.js` uses only built-in or installed modules.
+- If you see "ENOENT: no such file or directory, open '/app/package.json'" error:
+  - Ensure `package.json` exists in `services/api/` directory
+  - Check that the volume mount path in `compose/phase-00.yml` is correct (`../services/api:/app`)
+- If you see missing module errors, ensure Express is listed in `package.json` dependencies
+- If you see ES module import errors, ensure `"type": "module"` is set in `package.json`
 
 ---
 
